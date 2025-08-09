@@ -88,7 +88,7 @@ const App: React.FC = () => {
                       Start New Audit
                   </Button>
                   <Button onClick={() => window.print()} className="bg-blue-600 hover:bg-blue-700">
-                      Print Report
+                      Print to PDF
                   </Button>
                 </div>
               </div>
