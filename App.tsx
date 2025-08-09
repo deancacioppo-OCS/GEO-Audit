@@ -49,6 +49,19 @@ const App: React.FC = () => {
           <p className="text-lg text-slate-400 mt-2">AI-Powered Audit & Strategic Roadmap Tool</p>
         </header>
 
+        {reportData && !isLoading && !error && (
+          <div className="text-center mb-8 p-4 bg-slate-800/50 rounded-lg border border-slate-700">
+            <p className="text-lg text-slate-300 font-semibold">
+              Your Business's Aura Visibility Score is an overall metric, as is Generative Authority Score.
+              The remainder of the information details the specific strengths and weaknesses of the brand.
+            </p>
+            <p className="text-sm text-slate-400 mt-2">
+              To see the actual terms that you show up for in AI searches such as ChatGPT, Gemini, and Google's AI Mode Search is expensive to run and cutting edge.
+              Click <a href="#" className="text-teal-400 hover:underline font-bold">HERE</a> for more information.
+            </p>
+          </div>
+        )}
+
         <main>
           {!reportData && !isLoading && !error && (
             <InputForm onSubmit={handleAuditSubmit} isLoading={isLoading} />
@@ -70,9 +83,14 @@ const App: React.FC = () => {
             <div>
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold">GEO Audit Report for <span className="text-teal-400">{auditInput?.businessName}</span></h2>
-                <Button onClick={handleReset} className="mt-4">
-                    Start New Audit
-                </Button>
+                <div className="flex justify-center space-x-4 mt-4">
+                  <Button onClick={handleReset}>
+                      Start New Audit
+                  </Button>
+                  <Button onClick={() => window.print()} className="bg-blue-600 hover:bg-blue-700">
+                      Print Report
+                  </Button>
+                </div>
               </div>
               <GeoReport data={reportData} />
             </div>
