@@ -1,0 +1,90 @@
+
+import React, { useState, useCallback } from 'react';
+import InputForm from './components/InputForm';
+import { AuditInput, ReportData } from './types';
+import { generateGeoAuditReport } from './services/geminiService';
+import Loader from './components/ui/Loader';
+import GeoReport from './components/GeoReport';
+import Button from './components/ui/Button';
+
+const App: React.FC = () => {
+  const [auditInput, setAuditInput] = useState<AuditInput | null>(null);
+  const [reportData, setReportData] = useState<ReportData | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleAuditSubmit = useCallback(async (data: AuditInput) => {
+    setAuditInput(data);
+    setIsLoading(true);
+    setError(null);
+    setReportData(null);
+    try {
+      const result = await generateGeoAuditReport(data);
+      setReportData(result);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unexpected error occurred.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+  
+  const handleReset = () => {
+      setAuditInput(null);
+      setReportData(null);
+      setError(null);
+      setIsLoading(false);
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-900 bg-gradient-to-br from-slate-900 to-slate-800 text-slate-200 p-4 sm:p-8">
+      <div className="container mx-auto">
+        <header className="text-center mb-12">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-sky-500">
+            Generative Engine Optimization (GEO)
+          </h1>
+          <p className="text-lg text-slate-400 mt-2">AI-Powered Audit & Strategic Roadmap Tool</p>
+        </header>
+
+        <main>
+          {!reportData && !isLoading && !error && (
+            <InputForm onSubmit={handleAuditSubmit} isLoading={isLoading} />
+          )}
+
+          {isLoading && <Loader message="Generating GEO Report" />}
+
+          {error && !isLoading && (
+            <div className="text-center max-w-2xl mx-auto bg-red-900/50 border border-red-700 p-6 rounded-lg">
+              <h3 className="text-2xl font-bold text-red-400 mb-2">Analysis Failed</h3>
+              <p className="text-red-300">{error}</p>
+              <Button onClick={handleReset} className="mt-6">
+                Try Again
+              </Button>
+            </div>
+          )}
+
+          {reportData && !isLoading && (
+            <div>
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold">GEO Audit Report for <span className="text-teal-400">{auditInput?.businessName}</span></h2>
+                <Button onClick={handleReset} className="mt-4">
+                    Start New Audit
+                </Button>
+              </div>
+              <GeoReport data={reportData} />
+            </div>
+          )}
+        </main>
+        
+        <footer className="text-center mt-16 text-slate-500 text-sm">
+            <p>Powered by Gemini API. Report generated for demonstration purposes.</p>
+        </footer>
+      </div>
+    </div>
+  );
+};
+
+export default App;
