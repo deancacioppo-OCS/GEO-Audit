@@ -44,9 +44,9 @@ const App: React.FC = () => {
       <div className="container mx-auto">
         <header className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-sky-500">
-            Generative Engine Optimization (GEO)
+            Aura&trade; GEO Audit
           </h1>
-          <p className="text-lg text-slate-400 mt-2">AI-Powered Audit & Strategic Roadmap Tool</p>
+          <p className="text-lg text-slate-400 mt-2">A Comprehensive report detailing the ability for your business to be shown in AI results, with a strategic roadmap all in one tool</p>
         </header>
 
         {reportData && !isLoading && !error && (
@@ -90,6 +90,9 @@ const App: React.FC = () => {
                   <Button onClick={() => window.print()} className="bg-blue-600 hover:bg-blue-700">
                       Print to PDF
                   </Button>
+                  <Button onClick={() => window.location.href = 'https://oneclickgeo.netlify.app/'} className="bg-purple-600 hover:bg-purple-700">
+                      Back to One Click GEO
+                  </Button>
                 </div>
               </div>
               <GeoReport data={reportData} />
@@ -98,7 +101,8 @@ const App: React.FC = () => {
         </main>
         
         <footer className="text-center mt-16 text-slate-500 text-sm">
-            <p>Powered by Gemini API. Report generated for demonstration purposes.</p>
+            <p>This is a limited, public example of Aura</p>
+            <p>Designed by <a href="https://oneclickgeo.netlify.app/" className="text-teal-400 hover:underline">One Click GEO</a> and powered by the most powerful AI on the planet</p>
         </footer>
       </div>
     </div>
